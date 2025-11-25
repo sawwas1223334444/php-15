@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ресторан - Управление заказами</title>
+    <style>
+        .navbar { background: #333; padding: 1rem; }
+        .navbar a { color: white; margin-right: 20px; text-decoration: none; }
+        .container { padding: 20px; }
+        .btn { padding: 8px 16px; margin: 5px; text-decoration: none; border-radius: 4px; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ path('app_home') }}">Главная</a>
+        <a href="{{ path('app_client_index') }}">Клиенты</a>
+        <a href="{{ path('app_dish_index') }}">Блюда</a>
+        <a href="{{ path('app_order_index') }}">Заказы</a>
+    </div>
+    
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>

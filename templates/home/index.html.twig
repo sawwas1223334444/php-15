@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>🍽️ Система управления рестораном</h1>
+    
+    <div style="margin: 20px 0;">
+        <p>{{ message }}</p>
+        
+        <div style="display: flex; gap: 20px; margin-top: 30px;">
+            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                <h3>👥 Клиенты</h3>
+                <p>Управление клиентской базой</p>
+                <a href="{{ path('app_client_index') }}" class="btn btn-primary">Перейти к клиентам</a>
+            </div>
+            
+            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                <h3>🍕 Блюда</h3>
+                <p>Управление меню ресторана</p>
+                <a href="{{ path('app_dish_index') }}" class="btn btn-primary">Перейти к блюдам</a>
+            </div>
+            
+            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                <h3>📋 Заказы</h3>
+                <p>Создание и просмотр заказов</p>
+                <a href="{{ path('app_order_index') }}" class="btn btn-primary">Перейти к заказам</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
