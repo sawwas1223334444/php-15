@@ -1,4 +1,31 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+    
+    <div class="mb-3">
+        <label class="form-label">Фото блюда</label>
+        
+        {% if dish.imageName %}
+            <div class="mb-2">
+                <img src="{{ dish.getImageUrl() }}" alt="{{ dish.name }}" 
+                     style="max-width: 200px; border: 1px solid #ddd; border-radius: 5px;">
+                <div class="mt-1">
+                    <small class="text-muted">Текущее фото: {{ dish.imageName }}</small>
+                </div>
+            </div>
+        {% else %}
+            <div class="mb-2">
+                <img src="/images/placeholder.jpg" alt="Заглушка" 
+                     style="max-width: 200px; border: 1px solid #ddd; border-radius: 5px;">
+                <div class="mt-1">
+                    <small class="text-muted">Нет фото - отображается заглушка</small>
+                </div>
+            </div>
+        {% endif %}
+        
+        {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+        <div class="form-text">Допустимые форматы: JPG, PNG</div>
+    </div>
+
+    <button class="btn btn-primary">{{ button_label|default('Сохранить') }}</button>
 {{ form_end(form) }}

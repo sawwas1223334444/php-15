@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Файлы заказа #{{ order_id }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Файлы заказа #{{ order_id }}</h1>
+
+        <a href="{{ path('app_order_file_new', {'orderId': order_id}) }}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Добавить файл
+        </a>
+        <a href="{{ path('app_order_show', {'id': order_id}) }}" class="btn btn-secondary mb-3">
+            <i class="fas fa-arrow-left"></i> Назад к заказу
+        </a>
+
+        {% if order_files|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Файл</th>
+                            <th>Оригинальное имя</th>
+                            <th>Тип</th>
+                            <th>Размер</th>
+                            <th>Дата загрузки</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for file in order_files %}
+                        <tr>
+                            <td>{{ file.id }}</td>
+                            <td>
+                                <i class="{{ file.getIconClass() }} fa-2x"></i>
+                            </td>
+                            <td>{{ file.originalName }}</td>
+                            <td>{{ file.mimeType }}</td>
+                            <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                            <td>{{ file.createdAt|date('d.m.Y H:i') }}</td>
+                            <td>
+                                <a href="{{ path('app_order_file_download', {'orderId': order_id, 'id': file.id}) }}" 
+                                   class="btn btn-sm btn-success" title="Скачать">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                
+                                <form method="post" action="{{ path('app_order_file_delete', {'orderId': order_id, 'id': file.id}) }}" 
+                                      style="display: inline-block;" 
+                                      onsubmit="return confirm('Удалить этот файл?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file.id) }}">
+                                    <button class="btn btn-sm btn-danger" title="Удалить">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Нет загруженных файлов для этого заказа.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

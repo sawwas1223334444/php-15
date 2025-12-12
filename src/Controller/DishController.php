@@ -72,10 +72,47 @@ final class DishController extends AbstractController
     public function delete(Request $request, Dish $dish, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$dish->getId(), $request->getPayload()->getString('_token'))) {
+            // Удаляем файл изображения, если он существует
+            if ($dish->getImageName()) {
+                $filePath = $this->getParameter('kernel.project_dir') . '/public/images/dishes/' . $dish->getImageName();
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+            
             $entityManager->remove($dish);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_dish_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/delete-image', name: 'app_dish_delete_image', methods: ['POST'])]
+    public function deleteImage(Request $request, Dish $dish, EntityManagerInterface $entityManager): Response
+    {
+        // Используем getPayload() для Symfony 6.3+
+        if ($this->isCsrfTokenValid('delete-image'.$dish->getId(), $request->getPayload()->getString('_token'))) {
+            // Удаляем физический файл
+            if ($dish->getImageName()) {
+                $filePath = $this->getParameter('kernel.project_dir') . '/public/images/dishes/' . $dish->getImageName();
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+            
+            // Очищаем поля в базе данных
+            $dish->setImageFile(null);
+            $dish->setImageName(null);
+            $dish->setImageSize(null);
+            $dish->setUpdatedAt(new \DateTimeImmutable());
+            
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Фото успешно удалено.');
+        } else {
+            $this->addFlash('error', 'Неверный токен безопасности.');
+        }
+
+        return $this->redirectToRoute('app_dish_edit', ['id' => $dish->getId()]);
     }
 }

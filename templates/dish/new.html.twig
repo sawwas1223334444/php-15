@@ -1,11 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Dish{% endblock %}
+{% block title %}Добавить новое блюдо{% endblock %}
 
 {% block body %}
-    <h1>Create new Dish</h1>
+    <div class="container mt-4">
+        <h1>Добавить новое блюдо</h1>
 
-    {{ include('dish/_form.html.twig') }}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.price) }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>Фото блюда</h5>
+                        {{ form_row(form.imageFile) }}
+                        <small class="text-muted">Допустимые форматы: JPG, PNG. Максимальный размер: 5MB.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <a href="{{ path('app_dish_index') }}">back to list</a>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-plus"></i> Создать блюдо
+            </button>
+            <a href="{{ path('app_dish_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Назад к списку
+            </a>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

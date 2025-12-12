@@ -1,13 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Dish{% endblock %}
+{% block title %}Редактировать {{ dish.name }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Dish</h1>
+    <div class="container mt-4">
+        <h1>Редактировать блюдо</h1>
 
-    {{ include('dish/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.price) }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>Фото блюда</h5>
+                        
+                        {% if dish.imageName %}
+                            <div class="mb-3">
+                                <img src="{{ vich_uploader_asset(dish, 'imageFile') }}" 
+                                     alt="{{ dish.name }}" 
+                                     class="img-fluid rounded" 
+                                     style="max-height: 200px; width: auto;">
+                                <p class="text-muted mt-2">Текущее фото</p>
+                            </div>
+                        {% endif %}
+                        
+                        {{ form_row(form.imageFile) }}
+                        <small class="text-muted">Допустимые форматы: JPG, PNG. Максимальный размер: 5MB.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <a href="{{ path('app_dish_index') }}">back to list</a>
-
-    {{ include('dish/_delete_form.html.twig') }}
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Сохранить изменения
+            </button>
+            <a href="{{ path('app_dish_show', {'id': dish.id}) }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
